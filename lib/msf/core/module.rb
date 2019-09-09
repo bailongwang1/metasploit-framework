@@ -14,6 +14,7 @@ module Msf
 #
 ###
 class Module
+  autoload :Alert, 'msf/core/module/alert'
   autoload :Arch, 'msf/core/module/arch'
   autoload :Auth, 'msf/core/module/auth'
   autoload :Author, 'msf/core/module/author'
@@ -39,7 +40,11 @@ class Module
   autoload :Type, 'msf/core/module/type'
   autoload :UI, 'msf/core/module/ui'
   autoload :UUID, 'msf/core/module/uuid'
+  autoload :SideEffects, 'msf/core/module/side_effects'
+  autoload :Stability, 'msf/core/module/stability'
+  autoload :Reliability, 'msf/core/module/reliability'
 
+  include Msf::Module::Alert
   include Msf::Module::Arch
   include Msf::Module::Auth
   include Msf::Module::Author
@@ -56,6 +61,9 @@ class Module
   include Msf::Module::Type
   include Msf::Module::UI
   include Msf::Module::UUID
+  include Msf::Module::SideEffects
+  include Msf::Module::Stability
+  include Msf::Module::Reliability
 
   # The key where a comma-separated list of Ruby module names will live in the
   # datastore, consumed by #replicant to allow clean override of MSF module methods.
@@ -85,17 +93,6 @@ class Module
   #
   def framework
     self.class.framework
-  end
-
-  #
-  # This method allows modules to tell the framework if they are usable
-  # on the system that they are being loaded on in a generic fashion.
-  # By default, all modules are indicated as being usable.  An example of
-  # where this is useful is if the module depends on something external to
-  # ruby, such as a binary.
-  #
-  def self.is_usable
-    true
   end
 
   #
